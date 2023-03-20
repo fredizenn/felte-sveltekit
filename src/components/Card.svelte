@@ -11,7 +11,7 @@
 <div class="p-6 bg-white text-gray-800 rounded-sm shadow hover:shadow-md
   {styling}">
   <div class="flex card-header justify-between">
-    <div class="text-left font-semibold text-gray-500 ">{title}</div>
+    <div class="text-left font-semibold text-gray-600">{title}</div>
     <div><Icon src={labelIcon} solid class="w-7 h-7 {labelColor}" /></div>
   </div>
  <div class="flex flex-col">

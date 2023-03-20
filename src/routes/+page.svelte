@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
 
-
-
     let todos: any[] = []
     
     let uid = 1;
@@ -55,7 +53,11 @@
         <button class="btn btn-error text-white" on:click={clear}>Clear Completed</button> 
     </div>
     <div class="text-xs text-gray-400 text-center p-4">
-        <button class="btn btn-primary text-white" on:click={() => goto('/felte-form')}>Go to the Felte form</button>
+        <button class="btn btn-primary text-white" on:click={() => goto('/felte-form')}>Felte form</button>
+        <button class="btn btn-accent text-white" on:click={() => goto('/formula-gen')}>FORMULA GENERATOR</button>
+
+    </div>
+    <div class="text-xs text-gray-400 text-center p-4">
     </div>
     <!-- <div class="mt-4 grid grid-cols-2 gap-2 grid-rows-4">
         <div class="flex space-x-2">

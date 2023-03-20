@@ -8,7 +8,20 @@
 	import { validator } from '@felte/validator-yup';
 	import * as yup from 'yup';
 	import ValidationIcon from '../../components/ValidationIcon.svelte';
+	import Svelecte from 'svelecte';
+	import dayjs from 'dayjs'
 
+
+
+	let selection: any = null;
+	let value: any = null
+	let today: any = new Date()
+
+ function toDate(dateString: string): Date {
+  return dayjs(dateString, 'MM/DD/YYYY').toDate()
+}
+	
+	let options = [{"value": "Fk", "text": "Frederick"}, {"value": "Bz", "text": "Beezy"}]
 	yup.setLocale({
 		mixed: {
 			default: 'Not valid',
@@ -30,7 +43,13 @@
 			.matches(/^[0-9]+$/, 'Must be only digits')
 			.required(),
 		email: yup.string().email().required(),
-		details: yup.string().required()
+		details: yup.string().required(),
+		// name: yup.object().test('name', 'Select a name', function(value) {
+		// 	return !!value
+		// }).required()
+		name: yup.string().required(),
+		birthDate: yup.string().required(),
+		// date: yup.date().required().max(today.toISOString(), "Date cannot be in the future").label("Date")
 	});
 
 	const { form, touched, data, isValid, errors } = createForm({
@@ -38,9 +57,15 @@
 			customerName: '',
 			phoneNumber: '',
 			email: '',
-			details: ''
+			details: '',
+			name: value,
+			birthDate: toDate(today)
 		},
-		extend: [validator({ schema }), reporter]
+		extend: [validator({ schema }), reporter],
+		onSubmit: values => {
+			alert(JSON.stringify(values))
+
+		}
 	});
 
 	$: changeFocus = (touch: any, error: any) => {
@@ -58,7 +83,6 @@
 <div class="m-2 p-2">
 	<BackButton click={() => goto('/')} />
 </div>
-<div class="text-center text-xs">Took too long with this, smh.</div>
 <Card styling="w-2/4 mt-2 mx-auto align-middle" title="Playing with Felte">
 	<svelte:fragment slot="content">
 		<div class="border-b-2 pt-2" />
@@ -134,6 +158,38 @@
 						<span class="text-red-600 text-sm pt-1">{message || ''}</span>
 					</ValidationMessage>
 				</div>
+
+				<div>
+					<div class="form-control relative">
+						<label for="date" class="label">Date</label>
+						<input
+							id="date"
+                            data-theme="light"
+							class="input input-bordered {changeFocus($touched.birthDate, $errors.birthDate)}"
+							type="date"
+							name="birthDate"
+							value={new Date().toLocaleDateString()}
+						/>
+						<ValidationIcon classN="mr-6" touched={$touched.birthDate} errors={$errors.birthDate} />
+
+					</div>
+					<ValidationMessage for="birthDate" let:messages={message}>
+						<span class="text-red-600 text-sm pt-1">{message || ''}</span>
+					</ValidationMessage>
+				</div>
+				<div>
+					<div class="form-control relative">
+						<label for="select" class="label">Select An Option</label>
+						<Svelecte options={options} bind:value={value} name="name"></Svelecte>
+
+					</div>
+					{JSON.stringify($errors.name)}
+					<ValidationMessage for="value" let:messages={message}>
+						<span class="text-red-600 text-sm pt-1">{message || ''}</span>
+					</ValidationMessage>
+				</div>
+				
+
 			</div>
 			<div class="grid">
 				<SaveButton styling="w-2/3 mx-auto align-middle mt-4" disable={$isValid ? false : true} />
